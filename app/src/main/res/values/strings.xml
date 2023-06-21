@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">HiveChat</string>
+    <string name="signin_text">Sign In</string>
+    <string name="password_toggle_button_desc">Password visibility toggle icon</string>
+    <string name="password_field_placeholder">Enter your password here…</string>
+    <string name="password_text">Password</string>
+    <string name="username_field_placeholder">Enter your username here…</string>
+    <string name="username_text">Username</string>
+    <string name="signin_screen_subtitle_text">Enter your credentials to sign in.</string>
+    <string name="signin_screen_title_text">Welcome!</string>
+    <string name="three_digits_count_text">+99</string>
+    <string name="new_chat_text">New Chat</string>
+    <string name="chat_list_screen_title">Chats</string>
+    <string name="empty_chats_text">Your chat list is empty. Receive messages or start a new chat to see it here.</string>
 </resources>
