@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.renekakpo.hivechat.ui.screens.ChatListScreen
+import com.renekakpo.hivechat.ui.screens.ChatScreen
 import com.renekakpo.hivechat.ui.screens.SignInScreen
 import com.renekakpo.hivechat.ui.screens.SplashScreen
 
@@ -26,6 +27,10 @@ fun HiveChatNavGraph(modifier: Modifier, navController: NavHostController) {
 
         composable(route = ChatListScreen.route) {
             ChatListScreen(navController = navController)
+        }
+
+        composable(route = ChatScreen.route) {
+            ChatScreen(navController = navController)
         }
     }
 }

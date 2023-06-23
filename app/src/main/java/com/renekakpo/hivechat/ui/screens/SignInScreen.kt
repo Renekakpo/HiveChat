@@ -79,8 +79,8 @@ fun SignInScreen(navController: NavHostController) {
                 )
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = Color.LightGray
+                focusedBorderColor = MaterialTheme.colors.primary,
+                unfocusedBorderColor = MaterialTheme.colors.onBackground.copy(alpha = 0.2f)
             ),
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth(),
@@ -124,8 +124,8 @@ fun SignInScreen(navController: NavHostController) {
                 }
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = Color.LightGray
+                focusedBorderColor = MaterialTheme.colors.primary,
+                unfocusedBorderColor = MaterialTheme.colors.onBackground.copy(alpha = 0.2f)
             ),
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth(),

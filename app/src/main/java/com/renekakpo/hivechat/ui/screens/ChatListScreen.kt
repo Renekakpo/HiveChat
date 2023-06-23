@@ -73,7 +73,7 @@ fun ChatListScreen(navController: NavHostController) {
                 itemsIndexed(mockChatList) { _, item ->
                     ChatListItems(
                         chat = item,
-                        onItemClick = {}
+                        onItemClick = { navController.navigate(route = ChatScreen.route) }
                     )
                 }
             }
@@ -90,7 +90,10 @@ fun ChatListScreen(navController: NavHostController) {
                 .align(alignment = Alignment.End)
                 .padding(16.dp)
         ) {
-            Icon(imageVector = Icons.Filled.ChatBubbleOutline, contentDescription = stringResource(R.string.new_chat_text))
+            Icon(
+                imageVector = Icons.Filled.ChatBubbleOutline,
+                contentDescription = stringResource(R.string.new_chat_text)
+            )
         }
     }
 }
