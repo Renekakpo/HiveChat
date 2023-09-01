@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "985782264577",
+    "project_id": "hivechat-1921a",
+    "storage_bucket": "hivechat-1921a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985782264577:android:2cc7a5737bb38a86c73100",
+        "android_client_info": {
+          "package_name": "com.renekakpo.hivechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985782264577-46r3oaeq2upoojl07mdvtqm2254gbfkq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD_1BAe6Fhe_lXwAJiWS4v0ZbW3kfwxwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985782264577-46r3oaeq2upoojl07mdvtqm2254gbfkq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

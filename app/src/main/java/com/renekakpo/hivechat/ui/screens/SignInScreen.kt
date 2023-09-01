@@ -1,7 +1,9 @@
 package com.renekakpo.hivechat.ui.screens
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,27 +14,42 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.renekakpo.hivechat.R
+import com.renekakpo.hivechat.app.HiveChatApp
 import com.renekakpo.hivechat.navigation.NavDestination
+import com.renekakpo.hivechat.services.MQTTForegroundService
 import com.renekakpo.hivechat.ui.theme.HiveChatTheme
+import com.renekakpo.hivechat.utils.showMessage
+import com.renekakpo.hivechat.viewModels.SignInUiState
+import com.renekakpo.hivechat.viewModels.SignInViewModel
+import com.renekakpo.hivechat.viewModels.provider.AppViewModelProvider
+import kotlinx.coroutines.*
 
 object SignInScreen : NavDestination {
     override val route: String = "sign_in_screen"
 }
 
 @Composable
-fun SignInScreen(navController: NavHostController) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun SignInScreen(
+    navController: NavHostController,
+    viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val context = LocalContext.current
+    var username by remember { mutableStateOf("Test_1") }
+    var password by remember { mutableStateOf("hiveMq321") }
+    var isLoading by remember { mutableStateOf(false) }
     var passwordVisibilityState by rememberSaveable { mutableStateOf(false) }
 
     Column(
@@ -134,19 +151,78 @@ fun SignInScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { navController.navigate(route = ChatListScreen.route) },
+            onClick = {
+                if (username.isEmpty()) {
+                    showMessage(context, "Username should not be empty!")
+                } else if (password.isEmpty()) {
+                    showMessage(context, "Password should not be empty!")
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.connectHiveClientToBroker(username, password)
+                    }
+                }
+            },
+            enabled = !isLoading,
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = MaterialTheme.shapes.medium
+                .height(height = if (isLoading) 65.dp else 50.dp)
+                .align(alignment = Alignment.CenterHorizontally),
+            shape = if (isLoading) CircleShape else MaterialTheme.shapes.medium
         ) {
-            Text(
-                text = stringResource(R.string.signin_text),
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onPrimary
-            )
+            when (val signInUiState = viewModel.signInUiState) {
+                is SignInUiState.Loading -> {
+                    isLoading = true
+
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(35.dp),
+                        color = MaterialTheme.colors.primary
+                    )
+                }
+                is SignInUiState.Error -> {
+                    isLoading = false
+
+                    showMessage(context, signInUiState.message)
+
+                    Text(
+                        text = stringResource(R.string.signin_text),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.onPrimary,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                is SignInUiState.Success -> {
+
+                    Text(
+                        text = stringResource(R.string.signin_text),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.onPrimary,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    navController.navigate(route = ChatListScreen.route)
+
+                    isLoading = false
+                }
+                else -> {
+                    isLoading = false
+
+                    Text(
+                        text = stringResource(R.string.signin_text),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.onPrimary,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
+}
+
+private fun startHiveMQService() {
+    val hiveMQService = Intent(HiveChatApp.appContext, MQTTForegroundService::class.java)
+    HiveChatApp.appContext.startService(hiveMQService)
 }
 
 @Preview

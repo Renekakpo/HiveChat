@@ -3,12 +3,11 @@ package com.renekakpo.hivechat.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.renekakpo.hivechat.ui.screens.ChatListScreen
-import com.renekakpo.hivechat.ui.screens.ChatScreen
-import com.renekakpo.hivechat.ui.screens.SignInScreen
-import com.renekakpo.hivechat.ui.screens.SplashScreen
+import androidx.navigation.navArgument
+import com.renekakpo.hivechat.ui.screens.*
 
 @Composable
 fun HiveChatNavGraph(modifier: Modifier, navController: NavHostController) {
@@ -29,7 +28,24 @@ fun HiveChatNavGraph(modifier: Modifier, navController: NavHostController) {
             ChatListScreen(navController = navController)
         }
 
-        composable(route = ChatScreen.route) {
+        composable(route = ContactsScreen.route) {
+            ContactsScreen(navController = navController)
+        }
+
+        composable(
+            route = ChatScreen.routeWithArgs,
+            arguments = listOf(
+                navArgument(name = ChatScreen.itemToJsonArg) {
+                    type = NavType.StringType
+                },
+                navArgument(name = ChatScreen.itemUUIDArg) {
+                    type = NavType.StringType
+                },
+                navArgument(name = ChatScreen.itemExistsArg) {
+                    type = NavType.BoolType
+                }
+            )
+        ) {
             ChatScreen(navController = navController)
         }
     }
